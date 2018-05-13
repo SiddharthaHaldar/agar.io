@@ -1,0 +1,17 @@
+{
+  "name": "agario",
+  "description": "",
+  "main": "sketch.js",
+  "authors": [
+    "sid"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
