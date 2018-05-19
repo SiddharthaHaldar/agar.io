@@ -39,8 +39,8 @@ server.listen(process.env.PORT || 8000,function(){
 })
 
 setInterval(function(){
-		io.sockets.emit('pos_update',{points:points,food:food})
-},33)
+		io.sockets.emit('pos_update',{points:points})
+},16)
 
 io.on('connection', function (socket) {
 
@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
       r:data.r,
       g:data.g,
       b:data.b}
-	socket.emit("id",{id:socket.id})
+	socket.emit("id",{id:socket.id,food:food})
   	//console.log(points)
   })
 
@@ -76,6 +76,7 @@ io.on('connection', function (socket) {
     }
     food[data.index]=obj
     points[socket.id].radius=data.radius
+    socket.emit("food",{food:food})
   })
 
   socket.on("disconnect",function(data){
