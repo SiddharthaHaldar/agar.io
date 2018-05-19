@@ -26,7 +26,7 @@ app.get("/",function(req,res){
 	res.send("hello world")
 })
 
-server.listen(8000,function(){
+server.listen(process.env.PORT || 8000,function(){
 	for(var x=1;x<=100;x++)
 	{
 		var obj={
