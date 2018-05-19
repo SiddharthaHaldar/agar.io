@@ -107,7 +107,7 @@ function draw() {
     ellipse(food[x].x,food[x].y,15,15)
     if(dist(food[x].x,food[x].y,pos.x,pos.y)<=(7.5+radius))
     {
-      radius+=0.5
+      radius+=0.3
       mass+=0.02
       socket.emit("eat",
         {index:x,
