@@ -97,7 +97,7 @@ function draw() {
   if(vect.mag()<=260)
     pos.add(vect.setMag(vect.mag()*0.025/mass))
   else
-    pos.add(vect.setMag(260*0.025/mass))
+    pos.add(vect.setMag(260*0.035/mass))
   socket.emit('pos', { x: pos.x,
                        y: pos.y})
   //}
@@ -150,7 +150,7 @@ function draw() {
             
             
             if(dist(pos.x,pos.y,arr[x][1].x,arr[x][1].y)<=radius)
-            {  radius=radius+5//arr[x][1].radius/4
+            {  radius=radius+1//arr[x][1].radius/4
                socket.emit("kill",{id:arr[x][0],
                                     radius:radius})
               //arr.splice(x,1)
