@@ -1,4 +1,5 @@
-var pos,vect=new p5.Vector(0,0),socket,id,radius=25,food=[],mass=1,flag=1,name,r=20,g=255,b=20
+var pos,vect=new p5.Vector(0,0),socket,id,radius=25,food=[],mass=1,flag=1,name,r=20,g=255,b=20,prevfood=[],
+    arr=[],kill=0
 var points=new Object()
 function setup() {
   name = prompt("Enter your name : ", "your name here");
@@ -47,11 +48,40 @@ function set_id(data)
 {
   id=data.id
   food=data.food
+  points=data.points
+  for(z in points)
+    arr.push([z,points[z]])
+
+  arr.sort(function(a,b){
+    return a[1].radius-b[1].radius
+  })
 }
 
 function pos_update(data)
 {
   points=data.points
+  var temparr=[]
+  
+  for(z in points)
+    temparr.push([z,points[z]])
+
+  temparr.sort(function(a,b){
+    return a[1].radius-b[1].radius
+  })
+  
+ 
+  if(kill==1)
+    {if(arr.length==temparr.length)
+      {
+        arr=temparr
+        kill=0
+      }
+      else{
+        arr=arr
+      }  
+     }
+  else
+    arr=temparr  
   //food=data.food
   //console.log(points)
 }
@@ -74,7 +104,8 @@ function lines()
 }
 
 function draw() {
-  if(flag){
+if(flag){
+  //console.log(food.length)
   background(224,255,255)
   vect.x=mouseX-width/2
   vect.y=mouseY-height/2
@@ -119,19 +150,21 @@ function draw() {
       socket.emit("eat",
         {index:x,
          radius:radius})
+      food.splice(x,1)
+      x-=1;
     }
   }
 
-  var arr=[]
+  /*var arr=[]
   
   for(z in points)
     arr.push([z,points[z]])
 
   arr.sort(function(a,b){
     return a[1].radius-b[1].radius
-  })
+  })*/
 
-  console.log(arr)
+  //console.log(arr)
 
   for(var x=0;x<arr.length;x++)
   {
@@ -154,18 +187,27 @@ function draw() {
     {
         if(radius>arr[x][1].radius)
         {
-            
-            
             if(dist(pos.x,pos.y,arr[x][1].x,arr[x][1].y)<=radius)
             {  radius=radius+5//arr[x][1].radius/4
                socket.emit("kill",{id:arr[x][0],
                                     radius:radius})
-              //arr.splice(x,1)
+              arr.splice(x,1)
+              x-=1;
+              kill=1
             }
         }
     }
   }
-
+  var count=0
+  /*var diff=prevfood.map(function(el,i){
+    if((el.x-food[i].x!=0)&&(el.y-food[i].y!=0))
+      count+=1;
+    return {x:el.x-food[i].x,
+            y:el.y-food[i].y}
+  })
+  if(count!=0)
+    console.log(diff)*/
+  prevfood=food
   pop()
 }
 else

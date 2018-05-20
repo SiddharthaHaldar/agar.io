@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
       r:data.r,
       g:data.g,
       b:data.b}
-	socket.emit("id",{id:socket.id,food:food})
+	socket.emit("id",{id:socket.id,food:food,points:points})
   	//console.log(points)
   })
 
@@ -86,6 +86,7 @@ io.on('connection', function (socket) {
   })
 
   socket.on("kill",function(data){
+    console.log(points[socket.id].name)
     console.log(data)
     io.sockets.emit("killed",{id:data.id})
     points[socket.id].radius=data.radius
