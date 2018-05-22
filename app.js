@@ -84,7 +84,8 @@ io.on('connection', function (socket) {
         {points[socket.id].radius=data.radius}
         catch(e){}
       }
-    socket.emit("food",{food:food})
+    //console.log("eaten")
+    io.sockets.emit("food",{food:food})
   })
 
   socket.on("disconnect",function(data){
