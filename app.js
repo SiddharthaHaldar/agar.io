@@ -62,9 +62,13 @@ io.on('connection', function (socket) {
   socket.on("pos", function (data) {
     if(points[socket.id])
     {
+    try{
     points[socket.id].x=data.x
   	points[socket.id].y=data.y
 	 //console.log(points)
+    }
+    catch(e)
+    {}
     }
   });
 
@@ -75,7 +79,11 @@ io.on('connection', function (socket) {
       y:Math.random()*(2000)-1000
     }
     food[data.index]=obj
-    points[socket.id].radius=data.radius
+    if(points[socket.id])
+      {try
+        {points[socket.id].radius=data.radius}
+        catch(e){}
+      }
     socket.emit("food",{food:food})
   })
 
