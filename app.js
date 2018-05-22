@@ -56,6 +56,7 @@ io.on('connection', function (socket) {
       g:data.g,
       b:data.b}
 	socket.emit("id",{id:socket.id,food:food,points:points})
+	console.log("Player joined : "+data.name)
   	//console.log(points)
   })
 
@@ -95,11 +96,11 @@ io.on('connection', function (socket) {
   })
 
   socket.on("kill",function(data){
-    console.log(points[socket.id].name)
-    console.log(data)
+    console.log("Player killed : "+points[data.id].name)
+    //console.log(data)
     io.sockets.emit("killed",{id:data.id})
     points[socket.id].radius=data.radius
     delete points[data.id]
-    console.log(points)
+    //console.log(points)
   })
 });
