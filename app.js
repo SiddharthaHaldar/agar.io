@@ -35,12 +35,12 @@ server.listen(process.env.PORT || 8000,function(){
 		}
 		food.push(obj)
 	}
-	console.log("Server started at:"+process.env.PORT)
+	console.log("Server started")
 })
 
 setInterval(function(){
-		io.sockets.emit('pos_update',{points:points,food:food})
-},33)
+		io.sockets.emit('pos_update',{points:points})
+},16)
 
 io.on('connection', function (socket) {
 
@@ -55,16 +55,20 @@ io.on('connection', function (socket) {
       r:data.r,
       g:data.g,
       b:data.b}
-	socket.emit("id",{id:socket.id})
+	socket.emit("id",{id:socket.id,food:food,points:points})
   	//console.log(points)
   })
 
   socket.on("pos", function (data) {
     if(points[socket.id])
     {
+    try{
     points[socket.id].x=data.x
   	points[socket.id].y=data.y
 	 //console.log(points)
+    }
+    catch(e)
+    {}
     }
   });
 
@@ -75,7 +79,12 @@ io.on('connection', function (socket) {
       y:Math.random()*(2000)-1000
     }
     food[data.index]=obj
-    points[socket.id].radius=data.radius
+    if(points[socket.id])
+      {try
+        {points[socket.id].radius=data.radius}
+        catch(e){}
+      }
+    socket.emit("food",{food:food})
   })
 
   socket.on("disconnect",function(data){
@@ -85,6 +94,7 @@ io.on('connection', function (socket) {
   })
 
   socket.on("kill",function(data){
+    console.log(points[socket.id].name)
     console.log(data)
     io.sockets.emit("killed",{id:data.id})
     points[socket.id].radius=data.radius
